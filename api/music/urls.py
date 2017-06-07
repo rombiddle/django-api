@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
+app_name = 'musicesgi'
 urlpatterns = [
     url(r'^api/artist', views.artist_list, name='artist-list'),
     url(r'^api/artist/(?P<pk>[0-9]+)/$', views.artist_detail, name='artist-detail'),
