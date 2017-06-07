@@ -9,4 +9,4 @@ type peut être nul.
 récupere le premier videoId trouvé et cela donne l'url de la vidéo : https://www.youtube.com/watch?v=videoID
 
 
-url exemple qui fonctionne : https://www.googleapis.com/youtube/v3/search?q=mylene&maxResults=25&part=snippet&key=AIzaSyCkORoK67IHPIpryEg1ajQxCGz_Fc6rz0g
+url exemple qui fonctionne : https://www.googleapis.com/youtube/v3/videos?id=Z_XwtGvpEIs&part=snippet,contentDetails,statistics&key=AIzaSyCkORoK67IHPIpryEg1ajQxCGz_Fc6rz0g
