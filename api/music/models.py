@@ -20,7 +20,7 @@ class Video(models.Model):
 		return '%s' % (self.title)
 	def save(self, *args, **kwargs):
 		# acces api youtube
-		self.title = 
+		# self.title = 
 		super(Video, self).save(*args, **kwargs)
 
 class Song(models.Model):
@@ -31,5 +31,14 @@ class Song(models.Model):
 	def __str__(self):
 		return '%s' % (self.title)
 	def save(self, *args, **kwargs):
-		Video.objects.get_or_create(url='http://www.google.fr', song=self)
 		super(Song, self).save(*args, **kwargs)
+		print(self)
+		video, created = Video.objects.get_or_create(url=self.url, defaults={'song': self})
+		if not created:
+			old_song = Song.objects.get(pk=video.song.pk)
+			old_song.url = ""
+			old_song.save()
+			print(old_song)
+			video.song = self
+			video.save()
+
