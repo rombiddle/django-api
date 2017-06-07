@@ -7,3 +7,6 @@ https://developers.google.com/youtube/v3/docs/search/list
 envoyer en parametre q= "nom de la chanson"
 type peut être nul.
 récupere le premier videoId trouvé et cela donne l'url de la vidéo : https://www.youtube.com/watch?v=videoID
+
+
+url exemple qui fonctionne : https://www.googleapis.com/youtube/v3/search?q=mylene&maxResults=25&part=snippet&key=AIzaSyCkORoK67IHPIpryEg1ajQxCGz_Fc6rz0g
