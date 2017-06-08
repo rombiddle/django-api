@@ -1,10 +1,23 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate
 from rest_framework.exceptions import ParseError
 from rest_framework import status
 from rest_framework.parsers import JSONParser
+from base64 import b64decode
 from .models import Album,Artist,Song,Video
 from .serializers import AlbumSerializer,ArtistSerializer,SongSerializer,VideoSerializer
+from .auth import  get_basic_auth, get_or_create_token
+
+def login(request):
+    basic = get_basic_auth(request)
+    if basic is not None:
+        log = b64decode(bytes(basic, 'ascii')).decode('ascii').split(':')
+        user = authenticate(username=log[0], password=log[1])
+        if user is not None:
+            token = get_or_create_token(user)
+            return JsonResponse(data={'token':token.hash})
+    return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 def artist_list(request):
@@ -26,7 +39,6 @@ def artist_list(request):
             return JsonResponse(serializer.data, status=status.HTTP_400_BAD_REQUEST)
     else:
         return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
 
 @csrf_exempt
 def artist_detail(request, pk):
@@ -59,7 +71,6 @@ def artist_detail(request, pk):
     else:
         return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
 @csrf_exempt
 def album_list(request):
     if request.method == 'GET':
@@ -80,7 +91,6 @@ def album_list(request):
             return JsonResponse(serializer.data, status=status.HTTP_400_BAD_REQUEST)
     else:
         return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
 
 @csrf_exempt
 def album_detail(request, pk):
@@ -113,8 +123,6 @@ def album_detail(request, pk):
     else:
         return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
-
 @csrf_exempt
 def song_list(request):
     if request.method == 'GET':
@@ -135,7 +143,6 @@ def song_list(request):
             return JsonResponse(serializer.data, status=status.HTTP_400_BAD_REQUEST)
     else:
         return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
 
 @csrf_exempt
 def song_detail(request, pk):
@@ -168,10 +175,6 @@ def song_detail(request, pk):
     else:
         return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
-
-
-
 @csrf_exempt
 def video_list(request):
     if request.method == 'GET':
@@ -192,7 +195,6 @@ def video_list(request):
             return JsonResponse(serializer.data, status=status.HTTP_400_BAD_REQUEST)
     else:
         return HttpResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
 
 @csrf_exempt
 def video_detail(request, pk):
