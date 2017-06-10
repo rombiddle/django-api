@@ -11,6 +11,7 @@ from .auth import  get_basic_auth, get_or_create_token
 
 def login(request):
     basic = get_basic_auth(request)
+    print(basic)
     if basic is not None:
         log = b64decode(bytes(basic, 'ascii')).decode('ascii').split(':')
         user = authenticate(username=log[0], password=log[1])

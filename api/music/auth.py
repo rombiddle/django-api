@@ -14,7 +14,6 @@ def get_or_create_token(user):
     token = Token.objects.create(user=user, hash=hash_phrase)
     return token
 
-
 def get_basic_auth(request):
     if 'HTTP_AUTHORIZATION' in request.META:
         auth = request.META['HTTP_AUTHORIZATION'].split(' ')
@@ -30,6 +29,7 @@ def check_request_token(request):
             if not token[0].is_expired():
                 return True
     return False
+
 
 
 
