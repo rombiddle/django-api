@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+import json
+import requests
 
 # Create your models here.
 class Artist(models.Model):
@@ -15,13 +17,23 @@ class Album(models.Model):
 
 class Video(models.Model):
 	url = models.CharField(max_length=200, unique= True)
-	title = models.CharField(max_length=100)
+	title = models.CharField(max_length=100, null=True, blank=True)
 	song = models.OneToOneField("Song", null=True, blank=True)
 	def __str__(self):
 		return '%s' % (self.title)
 	def save(self, *args, **kwargs):
 		# acces api youtube
-		# self.title = 
+		# clé api youtube : AIzaSyCCBAi0RJ12qEz1yag8O24BWrW9rhB1gpw
+		url2 = self.url
+		res = url2.rsplit('=', 1)[1]
+		urlfinal = 'https://www.googleapis.com/youtube/v3/videos?id='+res+'&key=AIzaSyCCBAi0RJ12qEz1yag8O24BWrW9rhB1gpw&part=snippet'
+		print(urlfinal)
+		r = requests.get(urlfinal)
+		data = json.loads(r.text)
+		for i in data['items']:
+			# print (i['snippet']['title'])
+			self.title = i['snippet']['title']
+		# https://www.googleapis.com/youtube/v3/videos?id=oyEuk8j8imI&key=AIzaSyCCBAi0RJ12qEz1yag8O24BWrW9rhB1gpw&part=snippet
 		super(Video, self).save(*args, **kwargs)
 
 class Song(models.Model):
