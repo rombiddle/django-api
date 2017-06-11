@@ -31,9 +31,7 @@ class Video(models.Model):
 		r = requests.get(urlfinal)
 		data = json.loads(r.text)
 		for i in data['items']:
-			# print (i['snippet']['title'])
 			self.title = i['snippet']['title']
-		# https://www.googleapis.com/youtube/v3/videos?id=oyEuk8j8imI&key=AIzaSyCCBAi0RJ12qEz1yag8O24BWrW9rhB1gpw&part=snippet
 		super(Video, self).save(*args, **kwargs)
 
 class Song(models.Model):
