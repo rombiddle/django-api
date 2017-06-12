@@ -22,6 +22,8 @@ def login(request):
 
 @csrf_exempt
 def artist_list(request):
+  #  return HttpResponse(status=status.HTTP_200_OK)
+
     if request.method == 'GET':
         artists = Artist.objects.all()
         serializer = ArtistSerializer(artists, many=True)
@@ -29,7 +31,7 @@ def artist_list(request):
 
     elif request.method == 'POST':
         try:
-            data = JSONParser.parse(request)
+            data = JSONParser().parse(request)
         except ParseError:
             return HttpResponse(status=400)
         serializer = ArtistSerializer(data=data)
@@ -81,7 +83,7 @@ def album_list(request):
 
     elif request.method == 'POST':
         try:
-            data = JSONParser.parse(request)
+            data = JSONParser().parse(request)
         except ParseError:
             return HttpResponse(status=400)
         serializer = AlbumSerializer(data=data)
@@ -133,7 +135,7 @@ def song_list(request):
 
     elif request.method == 'POST':
         try:
-            data = JSONParser.parse(request)
+            data = JSONParser().parse(request)
         except ParseError:
             return HttpResponse(status=400)
         serializer = SongSerializer(data=data)
@@ -185,7 +187,7 @@ def video_list(request):
 
     elif request.method == 'POST':
         try:
-            data = JSONParser.parse(request)
+            data = JSONParser().parse(request)
         except ParseError:
             return HttpResponse(status=400)
         serializer = VideoSerializer(data=data)
